@@ -26,7 +26,7 @@ unicorn -c unicorn.rb -E production -p 8000 -D
 Killing
 -------
 
-To kill or restart the unicorn server, identify the pids for unicorn and `kill` them.
+To kill or restart the unicorn server, issue `killall unicorn` or identify the pids for unicorn and `kill` them.
 
 ```shell-script
 lsof -iTCP -sTCP:LISTEN -P
