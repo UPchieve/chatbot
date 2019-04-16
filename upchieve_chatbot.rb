@@ -11,8 +11,8 @@ class UPchieveChatbot < Sinatra::Base
     web = args.select { |arg| arg =~ %r{web/} }.first || "web/master"
     server = args.select { |arg| arg =~ %r{server/} }.first || "server/master"
 
-    web_branch = web.split("/").last
-    server_branch = server.split("/").last
+    web_branch = web.split("/")[1..-1].join("/")
+    server_branch = server.split("/")[1..-1].join("/")
 
     pid = spawn <<-SHELL
   cd ../server
