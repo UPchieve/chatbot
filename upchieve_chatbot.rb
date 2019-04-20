@@ -6,6 +6,7 @@ class UPchieveChatbot < Sinatra::Base
   post "/deploy" do
     return "Unauthorized" if params[:key] != ENV["SLACK_WEBHOOK_KEY"]
 
+    user_id = params[:user_id]
     environment = params[:command].to_s.scan(/deploy-(.+)/).flatten.first
     args = params[:text].to_s.split
     web = args.select { |arg| arg =~ %r{web/} }.first || "web/master"
@@ -15,9 +16,9 @@ class UPchieveChatbot < Sinatra::Base
     server_branch = server.split("/")[1..-1].join("/")
 
     pid = spawn <<-SHELL
-  cd ../server
-  bin/deploy -s #{server_branch} -w #{web_branch}
-  SHELL
+      cd ../server
+      bin/deploy -s #{server_branch} -w #{web_branch} -u '<@#{user_id}>'
+    SHELL
 
     Process.detach(pid)
 
