@@ -5,6 +5,7 @@ require "sinatra/base"
 class UPchieveChatbot < Sinatra::Base
   post "/deploy" do
     return "Unauthorized" if params[:key] != ENV["SLACK_WEBHOOK_KEY"]
+    return "Unauthorized" if params[:channel_id] != ENV["SLACK_CHATBOT_ALLOWED_CHANNEL"]
 
     user_id = params[:user_id]
     environment = params[:command].to_s.scan(/deploy-(.+)/).flatten.first
