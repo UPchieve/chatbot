@@ -7,6 +7,11 @@ class UPchieveChatbot < Sinatra::Base
     return "Unauthorized" if params[:key] != ENV["SLACK_WEBHOOK_KEY"]
     return "Unauthorized" if params[:channel_id] != ENV["SLACK_CHATBOT_ALLOWED_CHANNEL"]
 
+    deploy_channel = ENV["SLACK_DEPLOYMENT_CHANNEL"] || "tech-chatops"
+    unless params[:channel_name] == deploy_channel
+      return "Deployments must be triggered from ##{deploy_channel}."
+    end
+
     user_id = params[:user_id]
     environment = params[:command].to_s.scan(/deploy-(.+)/).flatten.first
     args = params[:text].to_s.split
